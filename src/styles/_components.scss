@@ -1,0 +1,8 @@
+.my-component {
+    background-color: $primary-color;
+    color: $text-color;
+  
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }  
