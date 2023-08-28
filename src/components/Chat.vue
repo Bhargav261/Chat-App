@@ -19,10 +19,11 @@
                                     <h1 class="font-bold">Users</h1>
                                 </li>
 
-                                <li class="flex justify-between gap-x-6 py-5 px-3" v-if="!displayUserList?.length">
+                                <li class="justify-between gap-x-6 py-5 px-3" v-if="!activeUserCount">
+                                    <!-- <small>Active User Count is {{ activeUserCount }}</small> -->
                                     <h1>Wating for more user join ...</h1>
                                 </li>
-                                
+
                                 <li v-for="userData in displayUserList" :key="userData.id"
                                     class="flex justify-between gap-x-6 py-5 px-3 cursor-pointer"
                                     @click="selectedUser(userData)">
@@ -127,6 +128,7 @@
                                     <div class="flex-grow ml-4">
                                         <div class="relative w-full">
                                             <input type="text" v-model="newMessage" @keyup.enter="sendMessage"
+                                                placeholder="message"
                                                 class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" />
                                         </div>
                                     </div>
@@ -167,7 +169,7 @@
 </template>
   
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from "vue-router";
 // import UserList from '@/components/UserList.vue';
 import { getUserDetails, firstCharacter } from "@/helper/helper";
@@ -241,6 +243,10 @@ export default {
             if (userIndex !== -1) {
                 displayUserList.value[userIndex].status = false;
             }
+
+            if (selctedUserID.value.name == userID) {
+                selctedUserID.value = ''
+            }
         });
 
         onMounted(() => {
@@ -299,7 +305,9 @@ export default {
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
-
+        const activeUserCount = computed(() => {
+            return displayUserList.value.filter(user => user.status).length;
+        });
 
         return {
             messages,
@@ -316,7 +324,8 @@ export default {
             loggedInUserName,
             selctedUserID,
             scrollToBottom,
-            firstCharacter
+            firstCharacter,
+            activeUserCount
         };
     }
 };
