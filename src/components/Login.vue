@@ -98,8 +98,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/styles/variables"; // Adjust the path accordingly
-@import "@/styles/components"; // Adjust the path accordingly
+@import "@/styles/variables";
+@import "@/styles/components";
 
 .my-component {
     @extend .my-component;

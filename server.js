@@ -23,12 +23,12 @@ io.on('connection', (socket) => {
   // Send initial messages to the connected user
   socket.emit('initialMessages', messages);
 
+  //Wating for get sendMessae event
   socket.on('sendMessage', (message) => {
     message.id = messages?.length + 1;
     message.timestamp = new Date(message.timestamp)
 
     messages.push(message);
-    // socket.emit('newMessage', {message, authUserID: message?.sendrId});
     if (readMessage[message?.receiverId]) {
       readMessage[message?.receiverId][message?.sendrId] = true;
     } else {
@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('newMessage', { message, authUserID: message?.receiverId, readMessage });
   });
 
+  //When Youe Login
   socket.on('loginRequest', (userName) => {
     const userListLength = Object.values(userList)?.length;
     let newUser = { id: userListLength + 1, name: userName };
@@ -54,6 +55,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('newUserDetail', newUser);
   });
 
+  
   socket.on('getMessage', (messageData) => {
 
     const { reseverId, senderID, filterMessageBy } = messageData;
@@ -94,11 +96,12 @@ io.on('connection', (socket) => {
     // socket.broadcast.emit('getMessages', filterMessage);
   });
 
-
+  //Request for send userList data
   socket.on('fetchUserList', () => {
     socket.emit('getUserList', { userList: Object.values(userList), readMessage });
   });
 
+  //Read Messace Update
   socket.on('updateReadMessageList', (messageData) => {
     const { receiverId, sendrId } = messageData;
 

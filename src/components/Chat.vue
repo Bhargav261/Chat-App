@@ -1,26 +1,17 @@
 <template>
-    <!-- <p>Welcome to the chat, {{ loggedInUserName }}!</p>
-    <button @click="logout">Logout</button> -->
-    <!-- 
-    <UserList />
-    <MessageList />
-    <MessageInput /> -->
-
-
     <div id="page-container" class="flex flex-col mx-auto w-full min-h-screen bg-gray-100">
         <main id="page-content" class="flex flex-auto flex-col max-w-full">
             <div class="bg-gray-100">
                 <div class="container p-6 mx-auto">
                     <div class="flex flex-wrap bg-white">
+                        <!-- User List View -->
                         <div class="md:w-2/5 w-full pb-6 md:pb-0 border-r-2 relative">
-                            <!-- user list design -->
                             <ul role="list" class="divide-y divide-gray-100">
                                 <li class="flex justify-between gap-x-6 py-5 px-3">
                                     <h1 class="font-bold">Users</h1>
                                 </li>
 
                                 <li class="justify-between gap-x-6 py-5 px-3" v-if="!activeUserCount">
-                                    <!-- <small>Active User Count is {{ activeUserCount }}</small> -->
                                     <h1>Wating for more user join ...</h1>
                                 </li>
 
@@ -49,8 +40,9 @@
                                 <button @click="logout">Logout</button>
                             </div>
                         </div>
+
+                        <!-- Messaeg  List View -->
                         <div class="md:w-3/5 w-full border-r-2 border-white">
-                            <!-- chat component -->
                             <div class="flex flex-col flex-auto flex-shrink-0 bg-gray-100 h-full" v-if="selctedUserID">
                                 <div
                                     class="relative flex justify-between items-center lg:space-x-4 md:space-x-4 space-x-0 p-4 bg-white">
@@ -58,7 +50,6 @@
                                         <div class="text-2xs mt-1 flex items-center">
                                             <div
                                                 class="mr-2 flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                                                <!-- A -->
                                                 {{ firstCharacter(selctedUserID.name) }}
                                             </div>
                                             <span class="text-gray-700 mr-3">{{ selctedUserID.name }}</span>
@@ -169,31 +160,22 @@
 </template>
   
 <script>
-import { ref, onMounted, computed } from 'vue';
 import { useRouter } from "vue-router";
-// import UserList from '@/components/UserList.vue';
-import { getUserDetails, firstCharacter } from "@/helper/helper";
 import { initializeSocket } from "@/utils/socket";
-// import MessageList from '@/components/MessageList.vue';
-// import MessageInput from '@/components/MessageInput.vue';
+import { ref, onMounted, computed } from 'vue';
+import { formatDate, getUserDetails, firstCharacter } from "@/helper/helper";
 
 export default {
     name: 'UserChat',
-    // components: {
-    //     UserList,
-    //     MessageList,
-    //     MessageInput,
-    //    
-    // },
     setup() {
         const messages = ref([]);
         const router = useRouter();
         const newMessage = ref('');
         const selctedUserID = ref('');
         const displayUserList = ref([]);
-        const loggedInUser = getUserDetails();
-        const selectedFilter = ref('all');
         const readMessageList = ref({});
+        const selectedFilter = ref('all');
+        const loggedInUser = getUserDetails();
         const loggedInUserId = ref(loggedInUser?.id || '');
         const loggedInUserName = ref(loggedInUser?.name || '');
 
@@ -249,6 +231,7 @@ export default {
             }
         });
 
+        //fetch User List
         onMounted(() => {
             if (!loggedInUserId.value) {
                 router.push({ name: "Login" });
@@ -256,6 +239,7 @@ export default {
             socket.emit('fetchUserList');
         });
 
+        //Send Message
         const sendMessage = () => {
             if (newMessage.value.trim() === '') return;
 
@@ -273,6 +257,7 @@ export default {
             scrollToBottom();
         };
 
+        //Select user for show particular message
         const selectedUser = (userID) => {
             const messageData = { reseverId: userID?.id, senderID: loggedInUserId.value, filterMessageBy: selectedFilter.value };
             socket.emit('getMessage', messageData);
@@ -284,27 +269,27 @@ export default {
             }
         }
 
+        //Filters
         const filterMessage = (filter) => {
             const messageData = { reseverId: selctedUserID.value.id, senderID: loggedInUserId.value, filterMessageBy: filter };
             socket.emit('getMessage', messageData);
             selectedFilter.value = filter;
         }
 
-        const formatDate = (timestamp) => {
-            return new Date(timestamp).toLocaleString();
-        };
-
+        //Logout
         const logout = () => {
             socket.emit('logout', loggedInUserName.value);
             router.push({ name: "Login" });
             localStorage.clear();
         };
 
+        //Scroll Buttom
         const scrollToBottom = () => {
             const chatContainer = document.querySelector('.height-card');
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
+        //Active User List
         const activeUserCount = computed(() => {
             return displayUserList.value.filter(user => user.status).length;
         });
