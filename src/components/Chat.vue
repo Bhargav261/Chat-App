@@ -189,10 +189,17 @@ export default {
 
         //New Message Add
         socket.on('newMessage', ({ message, authUserID, readMessage }) => {
-            if (authUserID == loggedInUserId.value && selctedUserID.value.id == message?.sendrId) {
-                messages.value.push(message);
-                socket.emit('updateReadMessageList', message);
-                readMessage[loggedInUserId.value][message?.sendrId] = false;
+            if (authUserID == loggedInUserId.value) {
+
+                if (selctedUserID.value.id == message?.sendrId) {
+                    messages.value.push(message);
+                    socket.emit('updateReadMessageList', message);
+                    readMessage[loggedInUserId.value][message?.sendrId] = false;
+                }
+
+                const userIndex = displayUserList.value.findIndex(user => user.id == message?.sendrId);
+                const removedElement = displayUserList.value.splice(userIndex, 1)[0];
+                displayUserList.value.unshift(removedElement);
             }
 
             readMessageList.value = readMessage
