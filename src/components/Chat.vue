@@ -7,10 +7,12 @@
                         <!-- User List View -->
                         <div class="md:w-2/5 w-full pb-6 md:pb-0 border-r-2 relative">
                             <ul role="list" class="divide-y divide-gray-100">
-                                <li class="flex justify-between gap-x-6 py-5 px-3">
-                                    <h1 class="font-bold">Users</h1>
+                                <li class="flex justify-between gap-x-6 py-4 px-3 text-2xl">
+                                    <h1 class="font-bold">Chat</h1>
                                 </li>
-
+                                <li class="flex justify-between gap-x-6 py-2 px-3 text-sm">
+                                    <h1>Users</h1>
+                                </li>
                                 <li class="justify-between gap-x-6 py-5 px-3" v-if="!activeUserCount">
                                     <h1>Wating for more user join ...</h1>
                                 </li>
@@ -21,7 +23,7 @@
                                     <div class="flex min-w-0 gap-x-4"
                                         v-if="userData.id !== loggedInUserId && userData.status">
                                         <div
-                                            class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                                            class="flex text-white items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                                             {{ firstCharacter(userData.name) }}
                                         </div>
                                         <div class="min-w-0 flex-auto">
@@ -36,8 +38,11 @@
                                     </div>
                                 </li>
                             </ul>
-                            <div class="p-2 text-color-blue absolute bottom-0 w-full">
-                                <button @click="logout">Logout</button>
+                            <div class="p-3 text-color-blue absolute bottom-0 w-full border-t">
+                                <button @click="logout">
+                                    <font-awesome-icon icon="fa-sign-out-alt" />
+                                    <span class="ml-2">Logout</span>
+                                </button>
                             </div>
                         </div>
 
@@ -45,43 +50,43 @@
                         <div class="md:w-3/5 w-full border-r-2 border-white">
                             <div class="flex flex-col flex-auto flex-shrink-0 bg-gray-100 h-full" v-if="selctedUserID">
                                 <div
-                                    class="relative flex justify-between items-center lg:space-x-4 md:space-x-4 space-x-0 p-4 bg-white">
+                                    class=" h-16 relative flex justify-between items-center lg:space-x-4 md:space-x-4 space-x-0 p-3 bg-white">
                                     <div class="flex flex-col leading-tight">
                                         <div class="text-2xs mt-1 flex items-center">
                                             <div
-                                                class="mr-2 flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                                                class="mr-2 text-white flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                                                 {{ firstCharacter(selctedUserID.name) }}
                                             </div>
-                                            <span class="text-gray-700 mr-3">{{ selctedUserID.name }}</span>
+                                            <span class="text-gray-700 mr-3 font-bold">{{ selctedUserID.name }}</span>
                                         </div>
                                     </div>
 
-                                    <div class="flex flex-col leading-tight">
+                                    <div class="flex flex-col leading-tight filter p-2">
 
                                         <nav class="flex items-center space-x-1 md:space-x-2">
                                             <a href="javascript:void(0)" @click="filterMessage('all')"
-                                                class="px-3 md:px-5 font-medium flex items-center space-x-2 py-2 rounded text-gray-500 hover:text-indigo-500 hover:bg-indigo-100 active:bg-transparent"
-                                                :class="{ 'text-indigo-500 bg-indigo-100': selectedFilter == 'all' }">
+                                                class="text-sm	px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-lg text-gray-500 hover:text-white hover:bg-indigo-500 active:bg-transparent"
+                                                :class="{ 'text-white bg-indigo-500': selectedFilter == 'all' }">
                                                 All
                                             </a>
                                             <a href="javascript:void(0)" @click="filterMessage('7days')"
-                                                class="px-3 md:px-5 font-medium flex items-center space-x-2 py-2 rounded text-gray-500 hover:text-indigo-500 hover:bg-indigo-100 active:bg-transparent"
-                                                :class="{ 'text-indigo-500 bg-indigo-100': selectedFilter == '7days' }">
+                                                class="text-sm	px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-lg text-gray-500 hover:text-white hover:bg-indigo-500 active:bg-transparent"
+                                                :class="{ 'text-white bg-indigo-500': selectedFilter == '7days' }">
                                                 Today
                                             </a>
                                             <a href="javascript:void(0)" @click="filterMessage('today')"
-                                                class="px-3 md:px-5 font-medium flex items-center space-x-2 py-2 rounded text-gray-500 hover:text-indigo-500 hover:bg-indigo-100 active:bg-transparent"
-                                                :class="{ 'text-indigo-500 bg-indigo-100': selectedFilter == 'today' }">
+                                                class="text-sm px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-lg text-gray-500 hover:text-white hover:bg-indigo-500 active:bg-transparent"
+                                                :class="{ 'text-white bg-indigo-500': selectedFilter == 'today' }">
                                                 Last 7 days
                                             </a>
                                         </nav>
                                     </div>
                                 </div>
-                                <div class="flex flex-col h-full overflow-x-auto mb-4">
+                                <div class="flex flex-col h-full overflow-x-auto mt-2">
                                     <div class="flex flex-col h-full height-card">
                                         <div class="grid grid-cols-12 gap-y-2">
 
-                                            <div v-for="message in  messages " :key="message.timestamp" :class="{
+                                            <div v-for="message in   messages  " :key="message.timestamp" :class="{
                                                 'col-start-1 col-end-8 p-3 rounded-lg': message.sendrId != loggedInUserId,
                                                 'col-start-6 col-end-13 p-3 rounded-lg': message.sendrId == loggedInUserId
                                             }">
@@ -89,24 +94,30 @@
                                                     'flex flex-row items-center': message.sendrId != loggedInUserId,
                                                     'flex items-center justify-start flex-row-reverse': message.sendrId == loggedInUserId
                                                 }">
-                                                    <div
-                                                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
+                                                    <div class="flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0 shadow"
+                                                        :class="{
+                                                                'bg-white': message.sendrId != loggedInUserId,
+                                                                'text-white bg-indigo-500': message.sendrId == loggedInUserId
+                                                            }
+                                                            ">
                                                         {{ firstCharacter(message.sender) }}
                                                     </div>
 
 
                                                     <div class="message-width" :class="{
-                                                        'relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl ': message.sendrId != loggedInUserId,
-                                                        'relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl': message.sendrId == loggedInUserId
-                                                    }">
+                                                            'relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl ': message.sendrId != loggedInUserId,
+                                                            'relative mr-3 text-white text-sm bg-indigo-500 py-2 px-4 shadow rounded-xl': message.sendrId == loggedInUserId
+                                                        }
+                                                        ">
                                                         <div>
                                                             {{ message.message }}
                                                         </div>
                                                         <div class="absolute text-xs bottom-0 -mb-5 ml-2 text-gray-500"
                                                             :class="{
-                                                                'left-0': message.sendrId != loggedInUserId,
-                                                                'bottom-0 right-0': message.sendrId == loggedInUserId
-                                                            }">
+                                                                    'left-0': message.sendrId != loggedInUserId,
+                                                                    'bottom-0 right-0': message.sendrId == loggedInUserId
+                                                                }
+                                                                ">
                                                             {{ formatDate(message.timestamp) }}
                                                         </div>
                                                     </div>
@@ -119,15 +130,15 @@
                                     <div class="flex-grow ml-4">
                                         <div class="relative w-full">
                                             <input type="text" v-model="newMessage" @keyup.enter="sendMessage"
-                                                placeholder="message"
-                                                class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" />
+                                                placeholder="Write a message..."
+                                                class="flex border-0 w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" />
                                         </div>
                                     </div>
                                     <div class="ml-4">
                                         <button :disabled="!newMessage" @click="sendMessage"
-                                            class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
-                                            <span>Send</span>
-                                            <span class="ml-2">
+                                            class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white rounded-full p-3 flex-shrink-0">
+                                            <!-- <span>Send</span> -->
+                                            <span>
                                                 <svg class="w-4 h-4 transform rotate-45 -mt-px" fill="none"
                                                     stroke="currentColor" viewBox="0 0 24 24"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -387,5 +398,11 @@ export default {
 .welcome-img {
     width: 300px;
     height: 300px;
+}
+
+.filter {
+    background: #f3f4f6;
+    // padding: 10px;
+    border-radius: 6px;
 }
 </style>
