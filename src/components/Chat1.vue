@@ -5,13 +5,13 @@
                 <div class="container p-6 mx-auto">
                     <div class="flex flex-wrap bg-white">
                         <!-- User List View -->
-                        <div class="md:w-2/5 w-full pb-6 md:pb-0 border-05 relative">
-                            <ul role="list" class="ml-6 mt-6">
+                        <div class="md:w-2/5 w-full pb-6 md:pb-0 border-r-2 relative">
+                            <ul role="list" class="divide-y divide-gray-100">
                                 <li class="flex justify-between gap-x-6 py-4 px-3 text-2xl">
-                                    <h1 class="font-medium text-2xl tracking-wide">Chat</h1>
+                                    <h1 class="font-bold">Chat</h1>
                                 </li>
                                 <li class="flex justify-between gap-x-6 py-2 px-3 text-sm">
-                                    <h1 class="font-medium">Users</h1>
+                                    <h1>Users</h1>
                                 </li>
                                 <li class="justify-between gap-x-6 py-5 px-3" v-if="!activeUserCount">
                                     <h1>Wating for more user join ...</h1>
@@ -23,7 +23,7 @@
                                     <div class="flex min-w-0 gap-x-4"
                                         v-if="userData.id !== loggedInUserId && userData.status">
                                         <div
-                                            class="flex text-white items-center justify-center h-10 w-10 rounded-full bg-violet-600 flex-shrink-0">
+                                            class="flex text-white items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                                             {{ firstCharacter(userData.name) }}
                                         </div>
                                         <div class="min-w-0 flex-auto">
@@ -38,17 +38,10 @@
                                     </div>
                                 </li>
                             </ul>
-                            <div class="p-3 ml-6 mb-5 text-color-blue absolute bottom-0 w-full">
-                                <button class="flex items-center" @click="logout">
-                                    <span>
-                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M1.5 18C1.1 18 0.75 17.85 0.45 17.55C0.15 17.25 0 16.9 0 16.5V1.5C0 1.1 0.15 0.75 0.45 0.45C0.75 0.15 1.1 0 1.5 0H8.775V1.5H1.5V16.5H8.775V18H1.5ZM13.65 13.375L12.575 12.3L15.125 9.75H6.375V8.25H15.075L12.525 5.7L13.6 4.625L18 9.025L13.65 13.375Z"
-                                                fill="#6D42D8" />
-                                        </svg>
-                                    </span>
-                                    <span class="ml-2 font-normal">Log out</span>
+                            <div class="p-3 text-color-blue absolute bottom-0 w-full border-t">
+                                <button @click="logout">
+                                    <font-awesome-icon icon="fa-sign-out-alt" />
+                                    <span class="ml-2">Logout</span>
                                 </button>
                             </div>
                         </div>
@@ -57,11 +50,11 @@
                         <div class="md:w-3/5 w-full border-r-2 border-white">
                             <div class="flex flex-col flex-auto flex-shrink-0 bg-gray-100 h-full" v-if="selctedUserID">
                                 <div
-                                    class=" h-16 p-9 pr-6 pt-14 pb-12 relative flex justify-between items-center lg:space-x-4 md:space-x-4 space-x-0 p-3 bg-white">
+                                    class=" h-16 relative flex justify-between items-center lg:space-x-4 md:space-x-4 space-x-0 p-3 bg-white">
                                     <div class="flex flex-col leading-tight">
                                         <div class="text-2xs mt-1 flex items-center">
                                             <div
-                                                class="mr-2 text-white flex items-center justify-center h-10 w-10 rounded-full bg-violet-600 flex-shrink-0">
+                                                class="mr-2 text-white flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                                                 {{ firstCharacter(selctedUserID.name) }}
                                             </div>
                                             <span class="text-gray-700 mr-3 font-bold">{{ selctedUserID.name }}</span>
@@ -72,18 +65,18 @@
 
                                         <nav class="flex items-center space-x-1 md:space-x-2">
                                             <a href="javascript:void(0)" @click="filterMessage('all')"
-                                                class="text-sm	px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-md text-gray-500 hover:text-white hover:bg-violet-600 active:bg-violet"
-                                                :class="{ 'text-white bg-violet-600': selectedFilter == 'all' }">
+                                                class="text-sm	px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-lg text-gray-500 hover:text-white hover:bg-indigo-500 active:bg-transparent"
+                                                :class="{ 'text-white bg-indigo-500': selectedFilter == 'all' }">
                                                 All
                                             </a>
                                             <a href="javascript:void(0)" @click="filterMessage('7days')"
-                                                class="text-sm	px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-md text-gray-500 hover:text-white hover:bg-violet-600 active:bg-violet"
-                                                :class="{ 'text-white bg-violet-600': selectedFilter == '7days' }">
+                                                class="text-sm	px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-lg text-gray-500 hover:text-white hover:bg-indigo-500 active:bg-transparent"
+                                                :class="{ 'text-white bg-indigo-500': selectedFilter == '7days' }">
                                                 Today
                                             </a>
                                             <a href="javascript:void(0)" @click="filterMessage('today')"
-                                                class="text-sm px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-md text-gray-500 hover:text-white hover:bg-violet-600 active:bg-violet"
-                                                :class="{ 'text-white bg-violet-600': selectedFilter == 'today' }">
+                                                class="text-sm px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-lg text-gray-500 hover:text-white hover:bg-indigo-500 active:bg-transparent"
+                                                :class="{ 'text-white bg-indigo-500': selectedFilter == 'today' }">
                                                 Last 7 days
                                             </a>
                                         </nav>
@@ -101,21 +94,31 @@
                                                     'flex flex-row items-center': message.sendrId != loggedInUserId,
                                                     'flex items-center justify-start flex-row-reverse': message.sendrId == loggedInUserId
                                                 }">
+                                                    <div class="flex items-center justify-center h-10 w-10 rounded-full flex-shrink-0 shadow"
+                                                        :class="{
+                                                                'bg-white': message.sendrId != loggedInUserId,
+                                                                'text-white bg-indigo-500': message.sendrId == loggedInUserId
+                                                            }
+                                                            ">
+                                                        {{ firstCharacter(message.sender) }}
+                                                    </div>
+
+
                                                     <div class="message-width" :class="{
-                                                        'relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-lg rounded-tl-none': message.sendrId != loggedInUserId,
-                                                        'relative mr-3 text-white text-sm bg-violet-600 py-2 px-4 shadow rounded-lg rounded-tr-none': message.sendrId == loggedInUserId
-                                                    }
+                                                            'relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl ': message.sendrId != loggedInUserId,
+                                                            'relative mr-3 text-white text-sm bg-indigo-500 py-2 px-4 shadow rounded-xl': message.sendrId == loggedInUserId
+                                                        }
                                                         ">
                                                         <div>
                                                             {{ message.message }}
                                                         </div>
-                                                        <div class="w-80 absolute text-xs bottom-0 -mb-5 ml-2 text-gray-500"
+                                                        <div class="absolute text-xs bottom-0 -mb-5 ml-2 text-gray-500"
                                                             :class="{
-                                                                'left-0': message.sendrId != loggedInUserId,
-                                                                'bottom-0 right-0 text-right': message.sendrId == loggedInUserId
-                                                            }
+                                                                    'left-0': message.sendrId != loggedInUserId,
+                                                                    'bottom-0 right-0': message.sendrId == loggedInUserId
+                                                                }
                                                                 ">
-                                                            {{ message.sender + " - " + formatDate(message.timestamp) }}
+                                                            {{ formatDate(message.timestamp) }}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -123,17 +126,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="flex flex-row items-center h-16 bg-white w-full px-4 py-12">
+                                <div class="flex flex-row items-center h-16 bg-white w-full px-4">
                                     <div class="flex-grow ml-4">
                                         <div class="relative w-full">
                                             <input type="text" v-model="newMessage" @keyup.enter="sendMessage"
                                                 placeholder="Write a message..."
-                                                class="flex text-opacity border-0 w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" />
+                                                class="flex border-0 w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" />
                                         </div>
                                     </div>
                                     <div class="ml-4">
                                         <button :disabled="!newMessage" @click="sendMessage"
-                                            class="flex items-center justify-center bg-gradient-to-r from-violet-400 to-violet-700 focus:from-violet-700 focus:to-violet-600 bg-violet-600 hover:bg-indigo-600 text-white rounded-full p-3 flex-shrink-0">
+                                            class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white rounded-full p-3 flex-shrink-0">
                                             <!-- <span>Send</span> -->
                                             <span>
                                                 <svg class="w-4 h-4 transform rotate-45 -mt-px" fill="none"
@@ -348,10 +351,6 @@ export default {
     display: flex;
 }
 
-.border-05 {
-    border-right-width: 0.5px;
-}
-
 .message-column,
 .users-column {
     flex: 1;
@@ -373,10 +372,6 @@ export default {
 
 .text-align-right {
     text-align: right;
-}
-
-.text-opacity {
-    -webkit-opacity: 0.5;
 }
 
 .compose {
@@ -409,4 +404,5 @@ export default {
     background: #f3f4f6;
     // padding: 10px;
     border-radius: 6px;
-}</style>
+}
+</style>

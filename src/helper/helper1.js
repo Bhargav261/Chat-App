@@ -10,16 +10,11 @@ export function getUserDetails() {
 
 //Format the Date
 export const formatDate = (timestamp) => {
-    const now = new Date(timestamp);
-    const dateOptions = { year: 'numeric', month: 'numeric', day: 'numeric' };
-    const options = { hour: 'numeric', minute: 'numeric', hour12: true };
-    const formattedDate = now.toLocaleDateString(undefined, dateOptions);
-    const formattedTime = now.toLocaleTimeString(undefined, options);
-
-    return formattedDate + " " + formattedTime.toUpperCase()
+    return new Date(timestamp).toLocaleString();
 };
 
 //Return the first Character
 export const firstCharacter = (name) => {
+    console.log("name: - ", name);
     return name.charAt(0).toUpperCase()
 }

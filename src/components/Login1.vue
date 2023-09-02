@@ -13,27 +13,25 @@
                 <div class="py-6 lg:py-0 w-full md:w-8/12 lg:w-6/12 xl:w-4/12 relative">
                     <div class="mb-8 text-center">
                         <h1 class="text-4xl font-bold inline-flex items-center mb-1 space-x-3">
-                            <img alt="Vue logo" src="@/assets/chatLogo.png">
-                            <!-- Logo -->
+                            <!-- <img alt="Vue logo" src="@/assets/chatLogo.png"> -->
+                            Logo
                         </h1>
                     </div>
 
                     <div class="flex flex-col rounded-lg shadow-sm bg-white drop-shadow-xl overflow-hidden">
                         <div class="p-5 lg:p-6 grow w-full">
-                            <div class="sm:p-5 lg:px-10 lg:py-8 lg:pt-4">
-                                <div class="space-y-3">
-                                    <div class="text-center"><label class="text-2xl font-semibold">Log in</label></div>
+                            <div class="sm:p-5 lg:px-10 lg:py-8">
+                                <div class="space-y-6">
                                     <div class="space-y-1">
-                                        <label class="text-gray-400 text-xs">User name</label>
                                         <input
-                                            class="block border border-gray-200 rounded-md px-5 py-3 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                                            class="block border border-gray-200 rounded px-5 py-3 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                                             v-model="username" @keyup.enter="login" type="text"
-                                            placeholder="" />
+                                            placeholder="Enter your username" />
                                     </div>
                                     <div>
                                         <button type="submit" :disabled="!username" @click="login"
-                                            class="text-xs inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none w-full px-4 py-2 leading-6 rounded-md border-indigo-700 bg-violet-700 text-white hover:text-white hover:bg-violet-800 hover:border-indigo-800 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 active:bg-indigo-700 active:border-indigo-700">
-                                            {{ isLoading ? "Loading..." : "Log In" }}
+                                            class="inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none w-full px-4 py-3 leading-6 rounded border-indigo-700 bg-indigo-700 text-white hover:text-white hover:bg-indigo-800 hover:border-indigo-800 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 active:bg-indigo-700 active:border-indigo-700">
+                                            {{ isLoading ? "Loading..." : "Login" }}
                                         </button>
                                     </div>
                                 </div>
