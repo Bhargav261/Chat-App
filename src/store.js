@@ -69,7 +69,6 @@ const store = createStore({
         },
 
         storeUserDetails({ commit }, data) {
-            console.log("get here");
             commit('STORE_USER_DETAILS', data);
         }
     }

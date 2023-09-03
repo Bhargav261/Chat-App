@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('newMessage', { message, authUserID: message?.receiverId, readMessage });
   });
 
-  //When Youe Login
+  //When You Login
   socket.on('loginRequest', (userName) => {
     const userListLength = Object.values(userList)?.length;
     let newUser = { id: userListLength + 1, name: userName };
@@ -47,7 +47,11 @@ io.on('connection', (socket) => {
       userList[userName].status = true;
       newUser = userList[userName]
     } else {
-      newUser = { id: userListLength + 1, name: userName, status: true };
+      const colorArray = ["#FB7676", "#6D42D8", "#6CA3E3", "#FFB067", "#C175C8", "#FF8B49"]
+      const randomIndex = (userListLength + 1) % colorArray.length;
+      const randomColor = colorArray[randomIndex];
+
+      newUser = { id: userListLength + 1, name: userName, status: true, color: randomColor };
       userList[userName] = newUser;
     }
 
@@ -55,7 +59,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('newUserDetail', newUser);
   });
 
-  
+
   socket.on('getMessage', (messageData) => {
 
     const { reseverId, senderID, filterMessageBy } = messageData;

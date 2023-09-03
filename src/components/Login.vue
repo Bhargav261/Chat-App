@@ -18,7 +18,7 @@
                         </h1>
                     </div>
 
-                    <div class="flex flex-col rounded-lg shadow-sm bg-white drop-shadow-xl overflow-hidden">
+                    <div class="flex flex-col rounded-lg shadow-sm bg-white drop-shadow-2xl overflow-hidden">
                         <div class="p-5 lg:p-6 grow w-full">
                             <div class="sm:p-5 lg:px-10 lg:py-8 lg:pt-4">
                                 <div class="space-y-3">

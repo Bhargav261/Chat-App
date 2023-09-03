@@ -3,163 +3,9 @@
         <main id="page-content" class="flex flex-auto flex-col max-w-full">
             <div class="bg-gray-100">
                 <div class="container p-6 mx-auto">
-                    <div class="flex flex-wrap bg-white">
-                        <!-- User List View -->
-                        <div class="md:w-2/5 w-full pb-6 md:pb-0 border-05 relative">
-                            <ul role="list" class="ml-6 mt-6">
-                                <li class="flex justify-between gap-x-6 py-4 px-3 text-2xl">
-                                    <h1 class="font-medium text-2xl tracking-wide">Chat</h1>
-                                </li>
-                                <li class="flex justify-between gap-x-6 py-2 px-3 text-sm">
-                                    <h1 class="font-medium">Users</h1>
-                                </li>
-                                <li class="justify-between gap-x-6 py-5 px-3" v-if="!activeUserCount">
-                                    <h1>Wating for more user join ...</h1>
-                                </li>
-
-                                <li v-for="userData in displayUserList" :key="userData.id"
-                                    class="flex justify-between gap-x-6 py-5 px-3 cursor-pointer"
-                                    @click="selectedUser(userData)">
-                                    <div class="flex min-w-0 gap-x-4"
-                                        v-if="userData.id !== loggedInUserId && userData.status">
-                                        <div
-                                            class="flex text-white items-center justify-center h-10 w-10 rounded-full bg-violet-600 flex-shrink-0">
-                                            {{ firstCharacter(userData.name) }}
-                                        </div>
-                                        <div class="min-w-0 flex-auto">
-                                            <p class="text-sm font-semibold leading-6 text-gray-900">
-                                                {{ userData.name }}
-                                            </p>
-                                            <div class="text-color-blue"
-                                                v-if="readMessageList[loggedInUserId] && readMessageList[loggedInUserId][userData.id]">
-                                                New Message
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="p-3 ml-6 mb-5 text-color-blue absolute bottom-0 w-full">
-                                <button class="flex items-center" @click="logout">
-                                    <span>
-                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M1.5 18C1.1 18 0.75 17.85 0.45 17.55C0.15 17.25 0 16.9 0 16.5V1.5C0 1.1 0.15 0.75 0.45 0.45C0.75 0.15 1.1 0 1.5 0H8.775V1.5H1.5V16.5H8.775V18H1.5ZM13.65 13.375L12.575 12.3L15.125 9.75H6.375V8.25H15.075L12.525 5.7L13.6 4.625L18 9.025L13.65 13.375Z"
-                                                fill="#6D42D8" />
-                                        </svg>
-                                    </span>
-                                    <span class="ml-2 font-normal">Log out</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Messaeg  List View -->
-                        <div class="md:w-3/5 w-full border-r-2 border-white">
-                            <div class="flex flex-col flex-auto flex-shrink-0 bg-gray-100 h-full" v-if="selctedUserID">
-                                <div
-                                    class=" h-16 p-9 pr-6 pt-14 pb-12 relative flex justify-between items-center lg:space-x-4 md:space-x-4 space-x-0 p-3 bg-white">
-                                    <div class="flex flex-col leading-tight">
-                                        <div class="text-2xs mt-1 flex items-center">
-                                            <div
-                                                class="mr-2 text-white flex items-center justify-center h-10 w-10 rounded-full bg-violet-600 flex-shrink-0">
-                                                {{ firstCharacter(selctedUserID.name) }}
-                                            </div>
-                                            <span class="text-gray-700 mr-3 font-bold">{{ selctedUserID.name }}</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="flex flex-col leading-tight filter p-2">
-
-                                        <nav class="flex items-center space-x-1 md:space-x-2">
-                                            <a href="javascript:void(0)" @click="filterMessage('all')"
-                                                class="text-sm	px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-md text-gray-500 hover:text-white hover:bg-violet-600 active:bg-violet"
-                                                :class="{ 'text-white bg-violet-600': selectedFilter == 'all' }">
-                                                All
-                                            </a>
-                                            <a href="javascript:void(0)" @click="filterMessage('7days')"
-                                                class="text-sm	px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-md text-gray-500 hover:text-white hover:bg-violet-600 active:bg-violet"
-                                                :class="{ 'text-white bg-violet-600': selectedFilter == '7days' }">
-                                                Today
-                                            </a>
-                                            <a href="javascript:void(0)" @click="filterMessage('today')"
-                                                class="text-sm px-3 h-4 py-3 font-medium flex items-center space-x-2 py-2 rounded-md text-gray-500 hover:text-white hover:bg-violet-600 active:bg-violet"
-                                                :class="{ 'text-white bg-violet-600': selectedFilter == 'today' }">
-                                                Last 7 days
-                                            </a>
-                                        </nav>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col h-full overflow-x-auto mt-2">
-                                    <div class="flex flex-col h-full height-card">
-                                        <div class="grid grid-cols-12 gap-y-2">
-
-                                            <div v-for="message in   messages  " :key="message.timestamp" :class="{
-                                                'col-start-1 col-end-8 p-3 rounded-lg': message.sendrId != loggedInUserId,
-                                                'col-start-6 col-end-13 p-3 rounded-lg': message.sendrId == loggedInUserId
-                                            }">
-                                                <div :class="{
-                                                    'flex flex-row items-center': message.sendrId != loggedInUserId,
-                                                    'flex items-center justify-start flex-row-reverse': message.sendrId == loggedInUserId
-                                                }">
-                                                    <div class="message-width" :class="{
-                                                        'relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-lg rounded-tl-none': message.sendrId != loggedInUserId,
-                                                        'relative mr-3 text-white text-sm bg-violet-600 py-2 px-4 shadow rounded-lg rounded-tr-none': message.sendrId == loggedInUserId
-                                                    }
-                                                        ">
-                                                        <div>
-                                                            {{ message.message }}
-                                                        </div>
-                                                        <div class="w-80 absolute text-xs bottom-0 -mb-5 ml-2 text-gray-500"
-                                                            :class="{
-                                                                'left-0': message.sendrId != loggedInUserId,
-                                                                'bottom-0 right-0 text-right': message.sendrId == loggedInUserId
-                                                            }
-                                                                ">
-                                                            {{ message.sender + " - " + formatDate(message.timestamp) }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex flex-row items-center h-16 bg-white w-full px-4 py-12">
-                                    <div class="flex-grow ml-4">
-                                        <div class="relative w-full">
-                                            <input type="text" v-model="newMessage" @keyup.enter="sendMessage"
-                                                placeholder="Write a message..."
-                                                class="flex text-opacity border-0 w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" />
-                                        </div>
-                                    </div>
-                                    <div class="ml-4">
-                                        <button :disabled="!newMessage" @click="sendMessage"
-                                            class="flex items-center justify-center bg-gradient-to-r from-violet-400 to-violet-700 focus:from-violet-700 focus:to-violet-600 bg-violet-600 hover:bg-indigo-600 text-white rounded-full p-3 flex-shrink-0">
-                                            <!-- <span>Send</span> -->
-                                            <span>
-                                                <svg class="w-4 h-4 transform rotate-45 -mt-px" fill="none"
-                                                    stroke="currentColor" viewBox="0 0 24 24"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                                                </svg>
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex flex-col flex-auto flex-shrink-0 bg-white-100 h-full height-message-block"
-                                v-if="!selctedUserID">
-                                <div class="flex justify-center mt-10">
-                                    <img class="rounded-full welcome-img"
-                                        src="https://marketplace.canva.com/EAFEits4-uw/1/0/800w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-r0bPCSjUqg0.jpg"
-                                        alt="Profile Image">
-                                </div>
-                                <p class="flex items-center justify-center mt-5 text-2xl text-color-blue">
-                                    Welcome to the chat, {{ loggedInUserName }}!
-                                </p>
-                            </div>
-                        </div>
+                    <div class="flex flex-wrap bg-white height-message-block chat-min-height">
+                        <Sidebar :selctedUserInfo="selctedUserID" :isResponsive="isResponsive" :updateSelctedUserID="updateSelctedUserID" />
+                        <MessageList :selctedUserInfo="selctedUserID" :isResponsive="isResponsive" :updateSelctedUserID="updateSelctedUserID" />
                     </div>
                 </div>
             </div>
@@ -168,245 +14,53 @@
 </template>
   
 <script>
+import Sidebar from './Sidebar.vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from "vue-router";
-import { initializeSocket } from "@/utils/socket";
-import { ref, onMounted, computed } from 'vue';
-import { formatDate, getUserDetails, firstCharacter } from "@/helper/helper";
+import MessageList from './MessageList.vue';
+import { getUserDetails } from "@/helper/helper";
+import { useResponsiveCheck } from '@/helper/useResponsiveCheck';
+
 
 export default {
     name: 'UserChat',
+    components: {
+        Sidebar,
+        MessageList,
+    },
     setup() {
-        const messages = ref([]);
         const router = useRouter();
-        const newMessage = ref('');
         const selctedUserID = ref('');
-        const displayUserList = ref([]);
-        const readMessageList = ref({});
-        const selectedFilter = ref('all');
         const loggedInUser = getUserDetails();
         const loggedInUserId = ref(loggedInUser?.id || '');
-        const loggedInUserName = ref(loggedInUser?.name || '');
+        const { isResponsive } = useResponsiveCheck(770);
 
-        //Initilize Socket
-        const socket = initializeSocket();
+        const updateSelctedUserID = (newSelectedUserList) => {
+            selctedUserID.value = newSelectedUserList;
+        };
 
-        //Get Particular User Message
-        socket.on('getMessages', (getMessages) => {
-            messages.value = getMessages;
-        });
-
-        //New Message Add
-        socket.on('newMessage', ({ message, authUserID, readMessage }) => {
-            if (authUserID == loggedInUserId.value) {
-
-                if (selctedUserID.value.id == message?.sendrId) {
-                    messages.value.push(message);
-                    socket.emit('updateReadMessageList', message);
-                    readMessage[loggedInUserId.value][message?.sendrId] = false;
-                }
-
-                const userIndex = displayUserList.value.findIndex(user => user.id == message?.sendrId);
-                const removedElement = displayUserList.value.splice(userIndex, 1)[0];
-                displayUserList.value.unshift(removedElement);
-            }
-
-            readMessageList.value = readMessage
-        });
-
-        //Get All Login User List
-        socket.on('getUserList', ({ userList, readMessage }) => {
-            const newUserList = userList.filter(userData => userData.id !== loggedInUserId.value && userData.status);
-            displayUserList.value = newUserList;
-            readMessageList.value = readMessage
-        });
-
-        //Add New User List
-        socket.on('newUserDetail', (userDetail) => {
-
-            const userIndex = displayUserList.value.findIndex(user => user.id == userDetail.id);
-
-            if (userIndex !== -1) {
-                displayUserList.value[userIndex].status = true;
-            } else {
-                displayUserList.value.push(userDetail);
-            }
-        });
-
-        //Update User Status when Logout
-        socket.on('updateUserStatus', (userID) => {
-
-            const userIndex = displayUserList.value.findIndex(user => user.name == userID);
-
-            if (userIndex !== -1) {
-                displayUserList.value[userIndex].status = false;
-            }
-
-            if (selctedUserID.value.name == userID) {
-                selctedUserID.value = ''
-            }
-        });
-
-        //fetch User List
         onMounted(() => {
             if (!loggedInUserId.value) {
                 router.push({ name: "Login" });
             }
-            socket.emit('fetchUserList');
-        });
-
-        //Send Message
-        const sendMessage = () => {
-            if (newMessage.value.trim() === '') return;
-
-            const message = {
-                message: newMessage.value,
-                timestamp: new Date(),
-                sendrId: loggedInUserId.value,
-                sender: loggedInUserName.value,
-                receiverId: selctedUserID.value.id,
-                receiver: selctedUserID.value.name
-            };
-            messages.value.push(message);
-            socket.emit('sendMessage', message);
-            newMessage.value = '';
-            scrollToBottom();
-        };
-
-        //Select user for show particular message
-        const selectedUser = (userID) => {
-            const messageData = { reseverId: userID?.id, senderID: loggedInUserId.value, filterMessageBy: selectedFilter.value };
-            socket.emit('getMessage', messageData);
-            selctedUserID.value = userID;
-
-            if (readMessageList.value[loggedInUserId.value] && readMessageList.value[loggedInUserId.value][userID?.id]) {
-                readMessageList.value[loggedInUserId.value][userID?.id] = false;
-                // socket.emit('updateReadMessageList', messageData);
-            }
-        }
-
-        //Filters
-        const filterMessage = (filter) => {
-            const messageData = { reseverId: selctedUserID.value.id, senderID: loggedInUserId.value, filterMessageBy: filter };
-            socket.emit('getMessage', messageData);
-            selectedFilter.value = filter;
-        }
-
-        //Logout
-        const logout = () => {
-            socket.emit('logout', loggedInUserName.value);
-            router.push({ name: "Login" });
-            localStorage.clear();
-        };
-
-        //Scroll Buttom
-        const scrollToBottom = () => {
-            const chatContainer = document.querySelector('.height-card');
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        //Active User List
-        const activeUserCount = computed(() => {
-            return displayUserList.value.filter(user => user.status).length;
         });
 
         return {
-            messages,
-            newMessage,
-            sendMessage,
-            formatDate,
-            displayUserList,
-            selectedUser,
-            loggedInUserId,
-            selectedFilter,
-            filterMessage,
-            readMessageList,
-            logout,
-            loggedInUserName,
             selctedUserID,
-            scrollToBottom,
-            firstCharacter,
-            activeUserCount
+            updateSelctedUserID,
+            isResponsive
         };
     }
 };
 </script>
 
-
-<style lang="scss">
-@import "@/styles/variables";
-@import "@/styles/components";
-
-.my-component {
-    @extend .my-component;
-}
-
-.text-color-blue {
-    color: $primary-color;
-}
-
-.app {
-    display: flex;
-}
-
-.border-05 {
-    border-right-width: 0.5px;
-}
-
-.message-column,
-.users-column {
-    flex: 1;
-    padding: 20px;
-    border: 1px solid #ccc;
-    overflow-y: auto;
-    max-height: 500px;
-}
-
-.message {
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #f5f5f5;
-}
-
-.user {
-    margin-bottom: 5px;
-}
-
-.text-align-right {
-    text-align: right;
-}
-
-.text-opacity {
-    -webkit-opacity: 0.5;
-}
-
-.compose {
-    padding: 10px;
-    border-top: 1px solid #ccc;
-}
-
-.message-width {
-    min-width: 135px;
-}
-
-.height-card {
-    min-height: 450px;
-    max-height: 450px;
-    overflow: auto;
-    flex-direction: column-reverse;
-}
-
+<style>
 .height-message-block {
-    min-height: 500px;
-    max-height: 500px;
+    min-height: 658px;
+    max-height: 658px;
 }
 
-.welcome-img {
-    width: 300px;
-    height: 300px;
-}
-
-.filter {
-    background: #f3f4f6;
-    // padding: 10px;
-    border-radius: 6px;
-}</style>
+/* .chat-min-height{
+    min-width: 740px
+} */
+</style>

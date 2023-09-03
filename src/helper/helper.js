@@ -21,5 +21,9 @@ export const formatDate = (timestamp) => {
 
 //Return the first Character
 export const firstCharacter = (name) => {
-    return name.charAt(0).toUpperCase()
+
+    const words = name.split(" ");
+    const firstCharacters = words.map(word => word[0]);
+
+    return firstCharacters.join("");
 }

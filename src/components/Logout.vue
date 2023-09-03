@@ -1,0 +1,44 @@
+<template>
+    <div class="p-3 ml-6 mb-5 text-color-blue absolute bottom-0 w-full">
+        <button class="flex items-center" @click="logout">
+            <span>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M1.5 18C1.1 18 0.75 17.85 0.45 17.55C0.15 17.25 0 16.9 0 16.5V1.5C0 1.1 0.15 0.75 0.45 0.45C0.75 0.15 1.1 0 1.5 0H8.775V1.5H1.5V16.5H8.775V18H1.5ZM13.65 13.375L12.575 12.3L15.125 9.75H6.375V8.25H15.075L12.525 5.7L13.6 4.625L18 9.025L13.65 13.375Z"
+                        fill="#6D42D8" />
+                </svg>
+            </span>
+            <span class="ml-2 font-normal">Log out</span>
+        </button>
+    </div>
+</template>
+  
+<script>
+import { ref } from 'vue';
+import { useRouter } from "vue-router";
+import { initializeSocket } from "@/utils/socket";
+import { getUserDetails } from "@/helper/helper";
+
+export default {
+    name: 'LogoutComp',
+    setup() {
+        const router = useRouter();
+        const loggedInUser = getUserDetails();
+        const loggedInUserName = ref(loggedInUser?.name || '');
+
+        //Initilize Socket
+        const socket = initializeSocket();
+
+        //Logout
+        const logout = () => {
+            socket.emit('logout', loggedInUserName.value);
+            router.push({ name: "Login" });
+            localStorage.clear();
+        };
+
+        return {
+            logout
+        };
+    }
+};
+</script>
