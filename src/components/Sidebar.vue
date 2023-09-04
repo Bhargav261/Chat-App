@@ -102,7 +102,6 @@ export default {
 
         //Add New User List
         socket.on('newUserDetail', (userDetail) => {
-            console.log("userDetail :- ", userDetail);
             const userIndex = displayUserList.value.findIndex(user => user.id == userDetail.id);
 
             if (userIndex !== -1) {

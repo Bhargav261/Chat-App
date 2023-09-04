@@ -3,9 +3,12 @@
     <div v-if="!isResponsive || selctedUserID" class="md:w-3/5 w-full border-r-2 border-l-2 border-white">
         <div class="flex flex-col flex-auto flex-shrink-0 bg-gray-100 h-full" v-if="selctedUserID">
             <div
-                class=" h-16 p-9 pr-6 pt-14 pb-12 relative flex justify-between items-center lg:space-x-4 md:space-x-4 space-x-0 p-3 bg-white">
+                class=" h-16 pr-6 pt-14 pb-12 relative flex justify-between items-center lg:space-x-4 md:space-x-4 space-x-0 p-3 bg-white"
+                :class="{'p-9':!isResponsive}"
+                >
                 <div class="flex flex-col leading-tight">
-                    <MessageHeader :selctedUserInfo="selctedUserInfo" :isResponsive="isResponsive" :updateSelctedUserID="updateSelctedUserID"/>
+                    <MessageHeader :selctedUserInfo="selctedUserInfo" :isResponsive="isResponsive"
+                        :updateSelctedUserID="updateSelctedUserID" />
                 </div>
 
                 <div class="flex flex-col leading-tight filter p-2">
@@ -48,7 +51,8 @@
             <div class="flex flex-row items-center h-16 bg-white w-full px-4 py-12">
                 <div class="flex-grow ml-4">
                     <div class="relative w-full">
-                        <input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="Write a message..."
+                        <input type="text" ref="messageInput" v-model="newMessage" @keyup.enter="sendMessage"
+                            placeholder="Write a message..."
                             class="flex text-opacity border-0 w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" />
                     </div>
                 </div>
@@ -102,6 +106,7 @@ export default {
     setup(props) {
 
         const messages = ref([]);
+        const messageInput = ref(null);
         const newMessage = ref('');
         const selctedUserID = ref(props?.selctedUserInfo);
         const readMessageList = ref({});
@@ -118,6 +123,13 @@ export default {
         watch(() => props.selctedUserInfo, (newSelectedUserID) => {
             selctedUserID.value = newSelectedUserID
             selectedUser(newSelectedUserID);
+        });
+
+        watch(() => messageInput.value, () => {
+            if(messageInput.value){
+                messageInput.value.focus();
+                scrollToBottom();
+            }
         });
 
 
@@ -180,6 +192,9 @@ export default {
                 readMessageList.value[loggedInUserId.value][userID?.id] = false;
                 // socket.emit('updateReadMessageList', messageData);
             }
+            if (messageInput.value) {
+                messageInput.value.focus();
+            }
         }
 
         //Filters
@@ -209,7 +224,8 @@ export default {
             selctedUserID,
             scrollToBottom,
             firstCharacter,
-            updateFilter
+            updateFilter,
+            messageInput
         };
     }
 };
