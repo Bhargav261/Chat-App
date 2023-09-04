@@ -128,7 +128,6 @@ export default {
         watch(() => messageInput.value, () => {
             if(messageInput.value){
                 messageInput.value.focus();
-                scrollToBottom();
             }
         });
 
